@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package agency_portal;
+
+message packet {
+    enum packet_type_t { 
+        PktBOOKINGTRIAGEHISTORY = 0;
+        PktBOOKINGTRIAGETRACKER = 1;
+        PktBOOKINGTRIAGETRACKEREXTENSION = 2;
+        PktTRIAGE = 3;
+        PktTRIAGEHISTORY = 4;
+        PktTRIAGETIMETABLE = 5;
+        PktTRIAGETIMETABLEPROVIDER = 6;
+        PktTRIAGEZIP = 7;
+    }
+
+    packet_type_t id = 2;
+    bytes data = 3;
+}
+
+
+
+message BOOKINGTRIAGEHISTORY { 
+    string uid = 1;
+    string provider_uri = 2;
+    string booking_uri = 3;
+    string action = 4;
+    int32 agency_user_id = 5;
+    int32 csr_id = 6;
+    uint64 when_created = 7;
+    uint64 tlm = 8;
+}
+
+
+message BOOKINGTRIAGETRACKER { 
+    string provider_uri = 1;
+    int32 triage_order = 2;
+    string booking_uri = 3;
+    int32 time_offered_in_mins = 4;
+    string tracker_type = 5;
+    string action_taken = 6;
+    uint64 action_taken_tlm = 7;
+    string status = 8;
+    uint64 status_tlm = 9;
+    bool triage_completed = 10;
+    uint64 when_created = 11;
+    uint64 tlm = 12;
+}
+
+
+message BOOKINGTRIAGETRACKEREXTENSION { 
+    string uid = 1;
+    string provider_uri = 2;
+    string booking_uri = 3;
+    bool permanently_declined = 4;
+    string notes = 5;
+    string source = 6;
+    string csr_id = 7;
+    uint64 when_created = 8;
+    uint64 tlm = 9;
+}
+
+
+message TRIAGE { 
+    string uid = 1;
+    string name = 2;
+    int32 acceptance_timer = 3;
+    uint64 when_created = 4;
+    uint64 tlm = 5;
+}
+
+
+message TRIAGEHISTORY { 
+    string uid = 1;
+    string triage_uid = 2;
+    string name = 3;
+    string zip = 4;
+    string open_job_timer = 5;
+    string time_table = 6;
+    int32 csr_id = 7;
+    uint64 when_created = 8;
+    uint64 tlm = 9;
+}
+
+
+message TRIAGETIMETABLE { 
+    string uid = 1;
+    string triage_uid = 2;
+    int32 order = 3;
+    string status = 4;
+    uint64 status_tlm = 5;
+    int32 assignment_timer = 6;
+    uint64 when_created = 7;
+    uint64 tlm = 8;
+}
+
+
+message TRIAGETIMETABLEPROVIDER { 
+    string triage_time_table_id = 1;
+    string provider_uri = 2;
+    string status = 3;
+    uint64 status_tlm = 4;
+    uint64 when_created = 5;
+    uint64 tlm = 6;
+}
+
+
+message TRIAGEZIP { 
+    string zip = 1;
+    string triage_uid = 2;
+    uint64 when_created = 3;
+    uint64 tlm = 4;
+}
+
+
+
