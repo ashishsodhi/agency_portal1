@@ -19,16 +19,19 @@ DB Table Details
 
 
 CREATE TABLE `TRIAGE_ZIP` (
-  `ZIP` varchar(45) NOT NULL,
-  `TRIAGE_UID` varchar(45) DEFAULT NULL,
-  `WHEN_CREATED` datetime DEFAULT NULL,
-  `TLM` datetime DEFAULT NULL,
-  PRIMARY KEY (`ZIP`)
+  `ZIP` char(5) NOT NULL,
+  `TRIAGE_UUID` varbinary(16) NOT NULL,
+  `WHEN_CREATED` datetime NOT NULL,
+  `TLM` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ZIP`),
+  KEY `IX_TLM` (`TLM`),
+  KEY `FK_TRIAGE_ZIP_TRIAGE_UUID` (`TRIAGE_UUID`),
+  CONSTRAINT `FK_TRIAGE_ZIP_TRIAGE_UUID` FOREIGN KEY (`TRIAGE_UUID`) REFERENCES `TRIAGE` (`UUID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 JSON Sample
 -------------------------------------
-{    "zip": "UjGpEFIeFRxPqimfVtcOYpvki",    "triage_uid": "mVfdGfMHseGMwVGSgriLBmnzO",    "when_created": "2102-02-23T06:54:25.723288882-05:00",    "tlm": "2146-09-30T18:04:55.349302523-05:00"}
+{    "when_created": "2179-06-17T13:35:29.469736263-05:00",    "tlm": "2274-05-03T10:08:28.531619631-05:00",    "zip": "bIDOGCnnXYRiUbzmRJlmiCUAO",    "triage_uuid": "KhUSQig9OTNWX0EeE0oFS0wCWRcdSBU="}
 
 
 
@@ -36,13 +39,13 @@ JSON Sample
 
 // TRIAGEZIP struct is a row record of the TRIAGE_ZIP table in the agency_portal database
 type TRIAGEZIP struct {
-	//[ 0] ZIP                                            varchar(45)          null: false  primary: true   auto: false  col: varchar         len: 45      default: []
+	//[ 0] ZIP                                            char(5)              null: false  primary: true   auto: false  col: char            len: 5       default: []
 	ZIP string `db:"ZIP" protobuf:"string,0,opt,name=zip"`
-	//[ 1] TRIAGE_UID                                     varchar(45)          null: true   primary: false  auto: false  col: varchar         len: 45      default: []
-	TRIAGEUID sql.NullString `db:"TRIAGE_UID" protobuf:"string,1,opt,name=triage_uid"`
-	//[ 2] WHEN_CREATED                                   datetime             null: true   primary: false  auto: false  col: datetime        len: -1      default: []
+	//[ 1] TRIAGE_UUID                                    varbinary            null: false  primary: false  auto: false  col: varbinary       len: -1      default: []
+	TRIAGEUUID []byte `db:"TRIAGE_UUID" protobuf:"bytes,1,opt,name=triage_uuid"`
+	//[ 2] WHEN_CREATED                                   datetime             null: false  primary: false  auto: false  col: datetime        len: -1      default: []
 	WHENCREATED time.Time `db:"WHEN_CREATED" protobuf:"uint64,2,opt,name=when_created"`
-	//[ 3] TLM                                            datetime             null: true   primary: false  auto: false  col: datetime        len: -1      default: []
+	//[ 3] TLM                                            timestamp            null: false  primary: false  auto: false  col: timestamp       len: -1      default: [CURRENT_TIMESTAMP]
 	TLM time.Time `db:"TLM" protobuf:"uint64,3,opt,name=tlm"`
 }
 

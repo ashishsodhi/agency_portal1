@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"app/server/model"
+	"example.com/example/model"
 
 	"github.com/guregu/null"
 )
@@ -21,19 +21,22 @@ var (
 DB Table Details
 -------------------------------------
 CREATE TABLE `TRIAGE_ZIP` (
-  `ZIP` varchar(45) NOT NULL,
-  `TRIAGE_UID` varchar(45) DEFAULT NULL,
-  `WHEN_CREATED` datetime DEFAULT NULL,
-  `TLM` datetime DEFAULT NULL,
-  PRIMARY KEY (`ZIP`)
+  `ZIP` char(5) NOT NULL,
+  `TRIAGE_UUID` varbinary(16) NOT NULL,
+  `WHEN_CREATED` datetime NOT NULL,
+  `TLM` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ZIP`),
+  KEY `IX_TLM` (`TLM`),
+  KEY `FK_TRIAGE_ZIP_TRIAGE_UUID` (`TRIAGE_UUID`),
+  CONSTRAINT `FK_TRIAGE_ZIP_TRIAGE_UUID` FOREIGN KEY (`TRIAGE_UUID`) REFERENCES `TRIAGE` (`UUID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 PrimaryKeyNamesList: [ZIP]
 PrimaryKeyNames    : ZIP
 delSql             : DELETE FROM TRIAGE_ZIP where ZIP = $1
-updateSql          : UPDATE TRIAGE_ZIP set TRIAGE_UID = $1, WHEN_CREATED = $2, TLM = $3 WHERE ZIP = $4
-insertSql          : INSERT INTO TRIAGE_ZIP ( ZIP,  TRIAGE_UID,  WHEN_CREATED,  TLM) values ( $1, $2, $3, $4 )
+updateSql          : UPDATE TRIAGE_ZIP set TRIAGE_UUID = $1, WHEN_CREATED = $2, TLM = $3 WHERE ZIP = $4
+insertSql          : INSERT INTO TRIAGE_ZIP ( ZIP,  TRIAGE_UUID,  WHEN_CREATED,  TLM) values ( $1, $2, $3, $4 )
 selectOneSql       : SELECT * FROM TRIAGE_ZIP WHERE ZIP=?
 selectMultiSql     : SELECT * FROM TRIAGE_ZIP
 
@@ -71,8 +74,8 @@ func GetTRIAGEZIP(ctx context.Context, argZIP string) (record *model.TRIAGEZIP, 
 // AddTRIAGEZIP is a function to add a single record to TRIAGE_ZIP table in the agency_portal database
 // error - ErrInsertFailed, db save call failed
 func AddTRIAGEZIP(ctx context.Context, record *model.TRIAGEZIP) (result *model.TRIAGEZIP, RowsAffected int64, err error) {
-	sql := "INSERT INTO TRIAGE_ZIP ( ZIP,  TRIAGE_UID,  WHEN_CREATED,  TLM) values ( $1, $2, $3, $4 )"
-	dbResult := DB.MustExecContext(ctx, sql, record.TRIAGEUID, record.WHENCREATED, record.TLM)
+	sql := "INSERT INTO TRIAGE_ZIP ( ZIP,  TRIAGE_UUID,  WHEN_CREATED,  TLM) values ( $1, $2, $3, $4 )"
+	dbResult := DB.MustExecContext(ctx, sql, record.TRIAGEUUID, record.WHENCREATED, record.TLM)
 	id, err := dbResult.LastInsertId()
 	fmt.Printf("LastInsertId: %d\n", id)
 	rows, err := dbResult.RowsAffected()
@@ -86,9 +89,9 @@ func AddTRIAGEZIP(ctx context.Context, record *model.TRIAGEZIP) (result *model.T
 // error - ErrNotFound, db record for id not found
 // error - ErrUpdateFailed, db meta data copy failed or db.Save call failed
 func UpdateTRIAGEZIP(ctx context.Context, argZIP string, updated *model.TRIAGEZIP) (result *model.TRIAGEZIP, RowsAffected int64, err error) {
-	sql := "UPDATE TRIAGE_ZIP set TRIAGE_UID = $1, WHEN_CREATED = $2, TLM = $3 WHERE ZIP = $4"
+	sql := "UPDATE TRIAGE_ZIP set TRIAGE_UUID = $1, WHEN_CREATED = $2, TLM = $3 WHERE ZIP = $4"
 	fmt.Printf("sql: %s\n", sql)
-	dbResult := DB.MustExecContext(ctx, sql, updated.TRIAGEUID, updated.WHENCREATED, updated.TLM, argZIP)
+	dbResult := DB.MustExecContext(ctx, sql, updated.TRIAGEUUID, updated.WHENCREATED, updated.TLM, argZIP)
 	id, err := dbResult.LastInsertId()
 	fmt.Printf("LastInsertId: %d\n", id)
 	rows, err := dbResult.RowsAffected()

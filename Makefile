@@ -1,4 +1,4 @@
-export PROJ_PATH=app/server
+export PROJ_PATH=example.com/example
 
 export DATE := $(shell date +%Y.%m.%d-%H%M)
 export LATEST_COMMIT := $(shell git log --pretty=format:'%h' -n 1)
@@ -153,13 +153,12 @@ regen: ## regenerate generated code
     --dao=dao \
     --api=api \
     --out=./ \
-    --module=app/server \
+    --module=example.com/example \
     --protobuf \
     --db \
     --mod \
     --makefile \
     --server \
-    --overwrite \
     --host=localhost \
     --port=8080 \
     --generate-dao \

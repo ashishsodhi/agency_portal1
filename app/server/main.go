@@ -18,9 +18,9 @@ import (
 	"github.com/swaggo/files"       // swagger embed files
 	"github.com/swaggo/gin-swagger" // gin-swagger middleware
 
-	"app/server/api"
-	"app/server/dao"
-	_ "app/server/docs"
+	"example.com/example/api"
+	"example.com/example/dao"
+	_ "example.com/example/docs"
 )
 
 var (
