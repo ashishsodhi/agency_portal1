@@ -20,7 +20,7 @@ DB Table Details
 
 CREATE TABLE `TRIAGE_ZIP` (
   `ZIP` char(5) NOT NULL,
-  `TRIAGE_UUID` varbinary(16) NOT NULL,
+  `TRIAGE_UUID` varchar(16) NOT NULL,
   `WHEN_CREATED` datetime NOT NULL,
   `TLM` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ZIP`),
@@ -31,7 +31,7 @@ CREATE TABLE `TRIAGE_ZIP` (
 
 JSON Sample
 -------------------------------------
-{    "when_created": "2179-06-17T13:35:29.469736263-05:00",    "tlm": "2274-05-03T10:08:28.531619631-05:00",    "zip": "bIDOGCnnXYRiUbzmRJlmiCUAO",    "triage_uuid": "KhUSQig9OTNWX0EeE0oFS0wCWRcdSBU="}
+{    "zip": "BFJFVXcwOogMulgZBGLGBbuoN",    "triage_uuid": "XivwsxgLlXBJeBQDtdakRiSOP",    "when_created": "2254-11-26T05:52:14.323886446-05:00",    "tlm": "2242-09-07T03:38:51.369748623-05:00"}
 
 
 
@@ -41,8 +41,8 @@ JSON Sample
 type TRIAGEZIP struct {
 	//[ 0] ZIP                                            char(5)              null: false  primary: true   auto: false  col: char            len: 5       default: []
 	ZIP string `db:"ZIP" protobuf:"string,0,opt,name=zip"`
-	//[ 1] TRIAGE_UUID                                    varbinary            null: false  primary: false  auto: false  col: varbinary       len: -1      default: []
-	TRIAGEUUID []byte `db:"TRIAGE_UUID" protobuf:"bytes,1,opt,name=triage_uuid"`
+	//[ 1] TRIAGE_UUID                                    varchar(16)          null: false  primary: false  auto: false  col: varchar         len: 16      default: []
+	TRIAGEUUID string `db:"TRIAGE_UUID" protobuf:"string,1,opt,name=triage_uuid"`
 	//[ 2] WHEN_CREATED                                   datetime             null: false  primary: false  auto: false  col: datetime        len: -1      default: []
 	WHENCREATED time.Time `db:"WHEN_CREATED" protobuf:"uint64,2,opt,name=when_created"`
 	//[ 3] TLM                                            timestamp            null: false  primary: false  auto: false  col: timestamp       len: -1      default: [CURRENT_TIMESTAMP]

@@ -45,6 +45,15 @@ http://localhost:8080/swagger/index.html
 
 ## REST urls for fetching data
 
+* http://localhost:8080/bookings
+* http://localhost:8080/bookingtriagehistories
+* http://localhost:8080/bookingtriagetrackers
+* http://localhost:8080/bookingtriagetrackerextensions
+* http://localhost:8080/providers
+* http://localhost:8080/triages
+* http://localhost:8080/triagehistories
+* http://localhost:8080/triagetimetables
+* http://localhost:8080/triagetimetableproviders
 * http://localhost:8080/triagezips
 
 ## Project Generated Details
@@ -65,7 +74,8 @@ gen \
     --db \
     --server \
     --generate-proj \
-    -v
+    -v \
+    --overwrite
 ```
 
 

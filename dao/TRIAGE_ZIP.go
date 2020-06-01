@@ -22,7 +22,7 @@ DB Table Details
 -------------------------------------
 CREATE TABLE `TRIAGE_ZIP` (
   `ZIP` char(5) NOT NULL,
-  `TRIAGE_UUID` varbinary(16) NOT NULL,
+  `TRIAGE_UUID` varchar(16) NOT NULL,
   `WHEN_CREATED` datetime NOT NULL,
   `TLM` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ZIP`),

@@ -4,7 +4,16 @@ package agency_portal;
 
 message packet {
     enum packet_type_t { 
-        PktTRIAGEZIP = 0;
+        PktBOOKING = 0;
+        PktBOOKINGTRIAGEHISTORY = 1;
+        PktBOOKINGTRIAGETRACKER = 2;
+        PktBOOKINGTRIAGETRACKEREXTENSION = 3;
+        PktPROVIDER = 4;
+        PktTRIAGE = 5;
+        PktTRIAGEHISTORY = 6;
+        PktTRIAGETIMETABLE = 7;
+        PktTRIAGETIMETABLEPROVIDER = 8;
+        PktTRIAGEZIP = 9;
     }
 
     packet_type_t id = 2;
@@ -13,9 +22,111 @@ message packet {
 
 
 
+message BOOKING { 
+    string uuid = 1;
+    string namespace = 2;
+    string collection = 3;
+    string metadata = 4;
+}
+
+
+message BOOKINGTRIAGEHISTORY { 
+    string uuid = 1;
+    string provider_uuid = 2;
+    string booking_uuid = 3;
+    string action = 4;
+    bytes user_uuid = 5;
+    bytes csr_uuid = 6;
+    uint64 when_created = 7;
+    uint64 tlm = 8;
+}
+
+
+message BOOKINGTRIAGETRACKER { 
+    string uuid = 1;
+    string provider_uuid = 2;
+    int16 triage_order = 3;
+    string booking_uuid = 4;
+    int16 time_offered_in_mins = 5;
+    string timer_execution_id = 6;
+    uint64 timer_expires_at = 7;
+    string tracking_type = 8;
+    string status = 9;
+    uint64 status_tlm = 10;
+    bool triage_completed = 11;
+    uint64 when_created = 12;
+    uint64 tlm = 13;
+}
+
+
+message BOOKINGTRIAGETRACKEREXTENSION { 
+    string uuid = 1;
+    string provider_uuid = 2;
+    string booking_uuid = 3;
+    bool permanently_declined = 4;
+    string notes = 5;
+    string source = 6;
+    bytes csr_uuid = 7;
+    uint64 when_created = 8;
+    uint64 tlm = 9;
+}
+
+
+message PROVIDER { 
+    string uuid = 1;
+    string namespace = 2;
+    string collection = 3;
+    string metadata = 4;
+}
+
+
+message TRIAGE { 
+    string uuid = 1;
+    string name = 2;
+    string acceptance_timer = 3;
+    uint64 when_created = 4;
+    uint64 tlm = 5;
+}
+
+
+message TRIAGEHISTORY { 
+    string uuid = 1;
+    string triage_uuid = 2;
+    string name = 3;
+    string zip = 4;
+    string open_job_timer = 5;
+    string time_table = 6;
+    bytes csr_uuid = 7;
+    uint64 when_created = 8;
+    uint64 tlm = 9;
+}
+
+
+message TRIAGETIMETABLE { 
+    string uuid = 1;
+    string triage_uuid = 2;
+    int16 order = 3;
+    string status = 4;
+    uint64 status_tlm = 5;
+    string assignment_timer = 6;
+    uint64 when_created = 7;
+    uint64 tlm = 8;
+}
+
+
+message TRIAGETIMETABLEPROVIDER { 
+    string triage_time_table_uuid = 1;
+    string provider_uuid = 2;
+    string status = 3;
+    uint64 status_tlm = 4;
+    uint64 when_created = 5;
+    uint64 tlm = 6;
+}
+
+
 message TRIAGEZIP { 
     string zip = 1;
-    bytes triage_uuid = 2;
+    string triage_uuid = 2;
     uint64 when_created = 3;
     uint64 tlm = 4;
 }

@@ -159,6 +159,7 @@ regen: ## regenerate generated code
     --mod \
     --makefile \
     --server \
+    --overwrite \
     --host=localhost \
     --port=8080 \
     --generate-dao \
